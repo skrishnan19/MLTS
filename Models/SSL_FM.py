@@ -94,11 +94,11 @@ class SSL_FM(nn.Module):
     def test_oneImg(self, I):
         self.student.eval()
         with torch.no_grad():
-            logits, _, _ = self.teacher(I)
+            logits, _, _ = self.student(I)
         return logits
 
     def test(self):
-        self.teacher.eval()
+        self.student.eval()
         gt_all, logits_all = [], []
         for i, (I, lbls) in enumerate(self.loader_Test):
             I = Variable(I.cuda(self.opt.gpuid))
@@ -191,6 +191,7 @@ class SSL_FM(nn.Module):
                 selected_pl = Y_u_p_all[idx].view(-1, 1).data.cpu().numpy()
                 accPseudoLbls = accuracy_score(selected_gt, selected_pl)
                 bacc = balanced_accuracy_score(selected_gt, selected_pl)
+                self.printStatPL(Y_u_all, Y_u_all[idx].view(-1, 1), Y_u_p_all[idx].view(-1, 1))
                 ns = torch.sum(m_all).cpu().numpy()
         return loss_tot, ns, accPseudoLbls, bacc
 
