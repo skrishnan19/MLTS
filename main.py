@@ -100,10 +100,8 @@ def testOne(opt):
         opt.seed = 500 * (i + 1)
         print(opt)
         if type == 'SSL':
-            opt.use_cw = True
             fm = SSL(opt)
         elif type == 'FM':
-            opt.use_cw = True
             fm = SSL_FM(opt)
 
         re, desc = fm.iterate()
